@@ -340,13 +340,14 @@
 	"mmcboot=run load_dtb load_kernel load_initrd set_cmdline boot_kernel\0" \
 	"console=ttyS0,115200\0" \
 	"root=/dev/mmcblk0p2\0" \
+        "debuglevel=2\0" \
 	"load_addr=41000000\0" \
 	"fdt_addr=45000000\0" \
 	"kernel_addr=41080000\0" \
 	"orangepi_mode=orangepi\0" \
 	"initrd_addr=45300000\0" \
-	"kernel_filename=orangepi/Image\0" \
-	"fdt_filename_prefix=orangepi/OrangePi-\0" \
+	"kernel_filename=Image\0" \
+	"fdt_filename_prefix=A64\0" \
 	"fdt_filename_suffix=.dtb\0" \
 	"initrd_filename=initrd.img\0" \
 	"bootenv_filename=uEnv.txt\0" \
@@ -356,7 +357,7 @@
 		"env import -t ${load_addr} ${filesize}\0" \
 	"load_dtb=" \
 		"if test ${fdt_filename} = \"\"; then " \
-			"setenv fdt_filename ${fdt_filename_prefix}A64${fdt_filename_suffix}; " \
+			"setenv fdt_filename ${fdt_filename_prefix}${fdt_filename_suffix}; " \
 		"fi; " \
 		"fatload mmc 0:1 ${fdt_addr} ${fdt_filename}; " \
 		"fdt addr ${fdt_addr}; fdt resize\0" \
@@ -369,11 +370,12 @@
 	"load_bootscript=" \
 		"fatload mmc 0:1 ${load_addr} ${script}\0" \
 	"scriptboot=source ${load_addr}\0" \
-	"set_cmdline=" \
-		"setenv bootargs console=${console} ${optargs} " \
-		"earlycon=uart,mmio32,0x01c28000 mac_addr=${ethaddr} " \
-		"root=${root} ro " \
-		"rootwait\0" \
+        "set_cmdline=" \
+                "setenv bootargs console=${console} ${optargs} " \
+                "earlycon=uart,mmio32,0x01c28000 " \
+                "loglevel=${debuglevel} " \
+                "root=${root} ro " \
+                "rootwait\0" \
 	"mmcbootcmd=" \
 		"if run load_bootenv; then " \
 			"echo Loading boot environment ...; " \

@@ -2730,7 +2730,6 @@ int mmc_init(struct mmc *mmc)
 
 	if (mmc->has_init) {
 		MMCINFO("Has init\n");
-		tick_printf("---%s %d %s\n", __FILE__, __LINE__, __FUNCTION__);
 		return 0;
 	}
 
